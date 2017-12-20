@@ -1,5 +1,5 @@
 FROM php:5.4-apache
-MAINTAINER Aurélien Lavorel <aurelien@lavoweb.net>
+MAINTAINER Yago Silvela <ysilvela@gmail.com>
 
 RUN apt-get update
 RUN apt-get install --yes --force-yes cron g++ gettext libicu-dev openssl libc-client-dev libkrb5-dev  libxml2-dev libfreetype6-dev libgd-dev libmcrypt-dev bzip2 libbz2-dev libtidy-dev libcurl4-openssl-dev libz-dev libmemcached-dev libxslt-dev
@@ -30,15 +30,3 @@ RUN docker-php-ext-configure hash --with-mhash
 # Apache Configuration
 RUN a2enmod rewrite
 RUN a2enmod headers
-
-# SSL
-RUN a2enmod ssl
-RUN a2ensite default-ssl
-RUN openssl req -subj '/CN=example.com/O=My Company Name LTD./C=US' -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem
-
-# Imagemagick
-RUN apt-get install --yes --force-yes libmagickwand-dev libmagickcore-dev
-RUN yes '' | pecl install -f imagick
-RUN docker-php-ext-enable imagick
-ENV APACHE_RUN_DIR /tmp/
-ENV APACHE_LOG_DIR /tmp/
